@@ -57,7 +57,7 @@ def verifica(pontuacao):
         elif maior == pontuacao[i]:
             nome.append(i)
 
-        return nome, maior
+    return nome, maior
 
 if __name__ == '__main__':
     main()
