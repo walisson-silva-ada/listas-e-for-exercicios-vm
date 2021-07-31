@@ -13,6 +13,7 @@ while i < n:
 media = sum(lista_nota)/len(lista_nota)
 media = round(media, 2)
 
+
 lista_media.append(media)
 
 media_TF = 0
@@ -25,4 +26,7 @@ else:
 lista_media_TF.append(media_TF)
 
 count += 1
+
+lista = [lista_nome, lista_idade, lista_nota, lista_media, lista_media_TF]
+print(lista)
 
