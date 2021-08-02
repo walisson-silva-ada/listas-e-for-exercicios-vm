@@ -1,57 +1,63 @@
-# Questão 20 (Funções)
-
-from random import randint
-
-def deck():
-    return 4*(list(range(1,11))+[10,10,10])
-
-def get_card(baralho):
-    i = randint(0, len(baralho))
-    valor = baralho.pop(i)
-    print(f'carta comprada vale {valor}!\n')
-    return valor
-
-def deal_card(nome, players, baralho):
-    print(f'{nome}, agora é seu turno')
-    ans = input('Deseja comprar um carta? (S / N): ')
-    while ans not in ("N", "S"):
-        ans = input('S ou N!')
-    if ans == "N":
-        players[nome]['status'] = False
-    elif ans == "S":
-        players[nome]['cards'].append(get_card(baralho))
-        total = sum(players[nome]['cards'])
-        if total > 21:
-            players[nome]['status'] = False
-            print(f'{nome} ultrapassou 21 e está fora!\n')
-
-def win_condition(players):
-    winner = 'Ninguém'
-    maior = 0
-    for player in players.keys():
-        total = sum(players[player]['cards'])
-        if total < 21 and total > maior:
-            winner = player
-            maior = total
-    print(f'O vencedor é {winner}!')
-
-def game_on():
-    n_players = int(input('Digite o número de jogadores: '))
-    baralho = deck()
-    players = {}
-    for j in range(n_players):
-        nome = input(f'Nome do jogador {j+1}: ')
-        while nome in players.keys() and players != {}:
-            nome = input(f'Jogador {j}, escolha outro nome: ')
-        players[nome] = {'status':True,'cards':[]}
-    while any([p['status'] for p in players.values()]):
-        for player in players.keys():
-            if players[player]['status']:
-                deal_card(player, players, baralho)
-    win_condition(players)
+import random
 
 def main():
-    game_on()
+    n_jogadores = int(input('Digite o número de jogadores: '))
+    nomes = []
+    
+    for i in range(n_jogadores):
+        nomes.append(input(f'Nome jogador {i+1}: '))
+    
+    pontuacao = dict.fromkeys(nomes, 0)
+    ativos = dict.fromkeys(nomes, True)
+        
+    baralho = cria_baralho()
+    
+    while True in ativos.values():
+        
+        jogadores_ativos = [a for a, ativo in ativos.items() if ativo]
+        
+        for jogador in jogadores_ativos:
+            ativos, pontuacao = jogada(jogador, ativos, pontuacao, baralho)
+    
+    print(f'O(s) vencedor(es) foi(foram) {verifica(pontuacao)[0]} com {verifica(pontuacao)[1]} pontos!')
+    
+        
+def cria_baralho():
+    baralho = [i for i in range(1, 11)] # indo de Ás (valendo 1) até 10
+    baralho += [10, 10, 10] # mais Valete, Dama e Rei (valendo 10 também)
+    baralho *= 4 # multiplicando por 4 para representar cada naipe
+    return baralho
 
-if __name__=='__main__':
+def jogada(nome, ativo, pontuacao, baralho):
+    if pontuacao[nome] < 21:
+        resposta = input(f'{nome}, sua pontuação é de {pontuacao[nome]}, deseja comprar uma carta? (Digite sim ou não): ') 
+        if resposta.upper() == 'SIM':
+            pontuacao[nome] += sorteia(baralho)
+            print(f'{nome}, sua pontuação agora é de {pontuacao[nome]}')
+        else:
+            ativo[nome] = False
+    else:
+        ativo[nome] = False
+        
+    return ativo, pontuacao
+        
+def sorteia(baralho):
+    numero_sorteado = random.randint(0,51)
+    # print(f'O número sorteado foi {numero_sorteado} que corresponde a carta {baralho[numero_sorteado]}')
+    return baralho[numero_sorteado]
+
+def verifica(pontuacao):
+    maior = 0
+    nome = []
+
+    for i in pontuacao:
+        if maior < pontuacao[i] and pontuacao[i] <= 21:
+            maior = pontuacao[i]
+            nome = [i]
+        elif maior == pontuacao[i]:
+            nome.append(i)
+
+    return nome, maior
+
+if __name__ == '__main__':
     main()

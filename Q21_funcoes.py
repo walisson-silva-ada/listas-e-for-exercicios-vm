@@ -1,43 +1,54 @@
-# Questão 21 (Funções)
+def cadastrar():
+    cliente = []
+    cliente.append(input('Nome: '))
+    cliente.append(input('CPF: '))
+    cliente.append(input('Email: '))
+    return cliente
 
-def cadastrar(nome, cpf, email):
-    return [nome, cpf, email]
+def buscar(clientes, cpf):
+    if len(clientes) > 0:
+        for c in clientes:
+            if cpf in c:
+                return c   
+    else:
+        return 'Não há clientes cadastrados'
+    
+    return 'Não encontrado!'
 
-def busca(cadastro, cpf):
-    for p in cadastro:
-        if cpf in p:
-            return p
-    print('Não encontrado')
+def imprimir(clientes):
+    if len(clientes) > 0:
+        for c in clientes:
+            print(f'Nome: {c[0]} | CPF: {c[1]} | email: {c[2]}')
+    else:
+        print('Não há clientes cadastrados')
+        
+    
+opcao = 1
+clientes = []
 
-def programa():
-    cadastro = []
-    option = 1
-    while option != 0:
-        option = int(input('Escolha a opção (0, 1, 2 ou 3): '))
-        if option==0:
-            print('Encerrar')
-            break
-        if option==1:
-            print('Cadastrar')
-            nome = input('Digite o nome: ')
-            cpf = input('Digite o cpf: ')
-            email = input('Digite o email: ')
-            cadastro.append(cadastrar(nome, cpf, email))
-        elif option==2:
-            print('Busca')
-            cpf = input('Digite o cpf: ')
-            res = busca(cadastro, cpf)
-            if res != None:
-                print(res)
-        elif option==3:
-            print('Cadastro')
-            for p in cadastro:
-                print(p)
-        else:
-            continue
+while opcao != 0:
+    
+    print('\n')
+    print('*********************************************')
+    print('****** Sistema de Cadastro de Clientes ******')
+    print('*********************************************')
+    print('1. Cadastrar novo cliente')
+    print('2. Buscar cliente por CPF')
+    print('3. Listar todos os clientes cadastrados')
+    print('0. Sair')
 
-def main():
-    programa()
-
-if __name__=='__main__':
-    main()
+    opcao = int(input('\nDigite o número correspondente a opção deseja: '))
+    
+    if opcao == 1:
+        cliente = cadastrar()
+        clientes.append(cliente)
+    
+    elif opcao == 2:
+        cpf = input('\nDigite o CPF que seja buscar: ')
+        print(buscar(clientes, cpf))
+        
+    elif opcao == 3:
+        imprimir(clientes)
+    
+    elif opcao != 0:
+        print('Opção inválida! Digite novamente.')
