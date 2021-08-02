@@ -1,18 +1,19 @@
+notas=[]
 
-# Questão 15 (Listas e For)
-# Considera só o que esta dentro na função main
-# o que tem além disso é só boas praticas de script
+#Inputs
+nome=input('Digite o nome do aluno: ')
+idade=int(input('Digite a Idade do aluno:'))
+provas=int(input('Digite quantas provas o aluno fez:'))
 
-def main():
-    nome = input('Digite o nome do aluno: ')
-    idade = int(input('Idade do aluno: '))
-    provas = int(input('Digite a quantidade de provas: '))
-    notas = []
-    for i in range(1,provas+1):
-        notas.append(float(input(f'Nota da prova {i}: ')))
-    media = sum(notas)/len(notas)
-    info = [nome, idade, notas, media, media > 5]
-    print(info)
+for i in range(provas):
+    nota=float(input(f'Digite a {i+1}ª nota do aluno:'))
+    while (nota<0 or nota>10):
+        nota= float(input(f'Não entendi, digite a {i+1}ª nota do aluno novamente: '))
+    notas.append(nota)
 
-if __name__ == '__main__':
-    main()
+
+#Calcula a média
+media=sum(notas)/provas
+media>5
+
+print([nome,idade,notas,float(f'{media:.2}'),media>5])
